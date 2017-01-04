@@ -1,4 +1,4 @@
-class MessengerClient
+module MessengerClient
   class Menu
     def initialize(buttons)
       @text    = text

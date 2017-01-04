@@ -1,4 +1,4 @@
-class MessengerClient
+module MessengerClient
   class ButtonTemplate
     def initialize(text, buttons)
       @text    = text

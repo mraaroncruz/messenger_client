@@ -1,4 +1,4 @@
-class MessengerClient
+module MessengerClient
   class LogoutButton
     def initialize
     end

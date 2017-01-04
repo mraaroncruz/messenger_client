@@ -1,4 +1,4 @@
-class MessengerClient
+module MessengerClient
   class URLAudio
     def initialize(url)
       @url = url

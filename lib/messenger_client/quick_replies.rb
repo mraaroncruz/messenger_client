@@ -1,4 +1,4 @@
-class MessengerClient
+module MessengerClient
   class QuickReplies
     def initialize(text, quick_replies)
       @text          = text

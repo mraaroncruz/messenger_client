@@ -1,4 +1,4 @@
-class MessengerClient
+module MessengerClient
   class URLFile
     def initialize(url)
       @url = url

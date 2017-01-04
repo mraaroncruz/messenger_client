@@ -1,6 +1,6 @@
 require File.expand_path("../button", __FILE__)
 
-class MessengerClient
+module MessengerClient
   class PayloadButton < Button
     def to_json
       {

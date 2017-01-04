@@ -1,4 +1,4 @@
-class MessengerClient
+module MessengerClient
   class LoginButton
     def initialize(url)
       @url = url

@@ -1,4 +1,4 @@
-class MessengerClient
+module MessengerClient
   class GetStarted
     def initialize(postback="get_started")
       @postback = postback

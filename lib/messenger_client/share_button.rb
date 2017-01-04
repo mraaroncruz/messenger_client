@@ -1,4 +1,4 @@
-class MessengerClient
+module MessengerClient
   class ShareButton
     def initialize
     end

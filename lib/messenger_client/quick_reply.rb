@@ -1,4 +1,4 @@
-class MessengerClient
+module MessengerClient
   class QuickReply
     def initialize(text, payload=nil, image_url=nil)
       @text      = text

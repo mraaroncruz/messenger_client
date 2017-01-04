@@ -1,4 +1,4 @@
-class MessengerClient
+module MessengerClient
   class LocationTemplate
     def initialize(text)
       @text = text
