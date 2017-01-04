@@ -72,8 +72,6 @@ module MessengerClient
     def generic_template(recipient_id:, template:)
     end
 
-    private
-
     def send(recipient_id, data, opts={})
       payload = {
         recipient: {
@@ -88,6 +86,8 @@ module MessengerClient
     def post(payload)
       Typhoeus.post(url, body: json(payload), headers: headers)
     end
+
+    private
 
     def url
       URL_TEMPLATE % @page_access_token
