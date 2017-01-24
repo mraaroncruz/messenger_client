@@ -80,11 +80,17 @@ module MessengerClient
       }
       payload.merge!(message: data) unless data.nil?
       payload.merge!(opts)
-      Typhoeus.post(url, body: json(payload), headers: headers)
+      res = Typhoeus.post(url, body: json(payload), headers: headers)
+      p res.body    if ENV["DEBUG"]
+      p res.headers if ENV["DEBUG"]
+      res
     end
 
     def post(payload)
-      Typhoeus.post(url, body: json(payload), headers: headers)
+      res = Typhoeus.post(url, body: json(payload), headers: headers)
+      p res.body    if ENV["DEBUG"]
+      p res.headers if ENV["DEBUG"]
+      res
     end
 
     private
