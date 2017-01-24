@@ -3,6 +3,9 @@ require "typhoeus"
 
 require "messenger_client/version"
 
+# Config
+require "messenger_client/config"
+
 # Buttons
 require "messenger_client/button"
 require "messenger_client/call_button"

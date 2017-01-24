@@ -4,6 +4,7 @@ module MessengerClient
 
     def initialize(page_access_token)
       @page_access_token = page_access_token
+      @logger            = MessengerClient::Config.logger
     end
 
     def setup_menu(buttons)
@@ -81,15 +82,19 @@ module MessengerClient
       payload.merge!(message: data) unless data.nil?
       payload.merge!(opts)
       res = Typhoeus.post(url, body: json(payload), headers: headers)
-      p res.body    if ENV["DEBUG"]
-      p res.headers if ENV["DEBUG"]
+      @logger.debug(url)           if ENV["DEBUG"]
+      @logger.debug(json(payload)) if ENV["DEBUG"]
+      @logger.debug(res.body)      if ENV["DEBUG"]
+      @logger.debug(res.headers)   if ENV["DEBUG"]
       res
     end
 
     def post(payload)
       res = Typhoeus.post(url, body: json(payload), headers: headers)
-      p res.body    if ENV["DEBUG"]
-      p res.headers if ENV["DEBUG"]
+      @logger.debug(url)           if ENV["DEBUG"]
+      @logger.debug(json(payload)) if ENV["DEBUG"]
+      @logger.debug(res.body)      if ENV["DEBUG"]
+      @logger.debug(res.headers)   if ENV["DEBUG"]
       res
     end
 
