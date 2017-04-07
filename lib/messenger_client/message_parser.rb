@@ -27,7 +27,11 @@ module MessengerClient
         url   = pl["url"]
         case attch["type"]
         when "image"
-          MessengerClient::Message::Image.new(m["mid"], timestamp, sender, url, pl["sticker_id"])
+          if sid = pl["sticker_id"]
+            MessengerClient::Message::Sticker.new(m["mid"], timestamp, sender, url, sid)
+          else
+            MessengerClient::Message::Image.new(m["mid"], timestamp, sender, url)
+          end
         when "video"
           MessengerClient::Message::Video.new(m["mid"], timestamp, sender, url)
         when "audio"
