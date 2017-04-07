@@ -31,6 +31,11 @@ module MessengerClient
       send(recipient_id, template.to_json)
     end
 
+    def generic_template(recipient_id:, title:, subtitle:, image_url:, default_url:, buttons:)
+      template = GenericTemplate.new(title, subtitle, image_url, default_url,  buttons)
+      send(recipient_id, template.to_json)
+    end
+
     def image(recipient_id:, url:)
       media = URLImage.new(url)
       send(recipient_id, media.to_json)
