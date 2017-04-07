@@ -9,6 +9,9 @@ require "messenger_client/message"
 # Message Parser
 require "messenger_client/message_parser"
 
+# Config
+require "messenger_client/config"
+
 # Buttons
 require "messenger_client/button"
 require "messenger_client/call_button"
