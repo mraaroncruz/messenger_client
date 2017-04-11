@@ -19,7 +19,7 @@ module MessengerClient
       timestamp = message["timestamp"]
       m = message["message"]
       if m.nil?
-        return parse_postback(message, timestamp, sender)
+        return parse_non_message(message, timestamp, sender)
       end
       if attchs = m["attachments"]
         attch = attchs.first
@@ -60,10 +60,14 @@ module MessengerClient
       return nil
     end
 
-    def parse_postback(message, timestamp, sender)
+    def parse_non_message(message, timestamp, sender)
       if pb = message["postback"]
         payload = pb["payload"].to_sym
         return MessengerClient::Message::Postback.new(timestamp, sender, payload)
+      end
+      if optin = message["optin"]
+        ref = optin["ref"]
+        return MessengerClient::Message::Optin.new(timestamp, sender, ref)
       end
       return nil
     end
