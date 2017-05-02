@@ -75,9 +75,6 @@ module MessengerClient
       end
     end
 
-    def generic_template(recipient_id:, template:)
-    end
-
     def send(recipient_id, data, opts={})
       payload = {
         recipient: {
