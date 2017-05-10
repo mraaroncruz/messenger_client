@@ -1,20 +1,15 @@
 module MessengerClient
   class Client
-    URL_TEMPLATE = "https://graph.facebook.com/v2.6/me/messages?access_token=%s"
+    URL_TEMPLATE = "https://graph.facebook.com/v2.6/me/%s"
 
     def initialize(page_access_token)
       @page_access_token = page_access_token
       @logger            = MessengerClient::Config.logger
     end
 
-    def setup_menu(buttons)
-      menu = Menu.new(buttons)
-      post(menu.to_json)
-    end
-
     def get_started(postback="get_started")
       gs = GetStarted.new(postback)
-      post(gs.to_json)
+      profile_post(gs.to_json)
     end
 
     def text(recipient_id:, text:)
@@ -83,8 +78,8 @@ module MessengerClient
       }
       payload.merge!(message: data) unless data.nil?
       payload.merge!(opts)
-      res = Typhoeus.post(url, body: json(payload), headers: headers)
-      @logger.debug(url)           if ENV["DEBUG"]
+      res = Typhoeus.post(message_url, body: json(payload), params: { access_token: @page_access_token }, headers: headers)
+      @logger.debug(message_url)           if ENV["DEBUG"]
       @logger.debug(json(payload)) if ENV["DEBUG"]
       @logger.debug(res.body)      if ENV["DEBUG"]
       @logger.debug(res.headers)   if ENV["DEBUG"]
@@ -92,8 +87,17 @@ module MessengerClient
     end
 
     def post(payload)
-      res = Typhoeus.post(url, body: json(payload), headers: headers)
-      @logger.debug(url)           if ENV["DEBUG"]
+      res = Typhoeus.post(message_url, body: json(payload), params: { access_token: @page_access_token }, headers: headers)
+      @logger.debug(message_url)           if ENV["DEBUG"]
+      @logger.debug(json(payload)) if ENV["DEBUG"]
+      @logger.debug(res.body)      if ENV["DEBUG"]
+      @logger.debug(res.headers)   if ENV["DEBUG"]
+      res
+    end
+
+    def profile_post(payload)
+      res = Typhoeus.post(profile_url, body: json(payload), params: { access_token: @page_access_token }, headers: headers)
+      @logger.debug(profile_url)   if ENV["DEBUG"]
       @logger.debug(json(payload)) if ENV["DEBUG"]
       @logger.debug(res.body)      if ENV["DEBUG"]
       @logger.debug(res.headers)   if ENV["DEBUG"]
@@ -102,8 +106,12 @@ module MessengerClient
 
     private
 
-    def url
-      URL_TEMPLATE % @page_access_token
+    def message_url
+      URL_TEMPLATE % "messages"
+    end
+
+    def profile_url
+      URL_TEMPLATE % "messenger_profile"
     end
 
     def json(payload)
@@ -112,7 +120,7 @@ module MessengerClient
 
     def headers
       { 'Accept-Encoding' => 'application/json',
-        'Content-Type' => 'application/json' }
+        'Content-Type'    => 'application/json' }
     end
   end
 end

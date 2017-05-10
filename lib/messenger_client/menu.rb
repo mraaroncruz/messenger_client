@@ -20,5 +20,3 @@ module MessengerClient
     end
   end
 end
-
-
