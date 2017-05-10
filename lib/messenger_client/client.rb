@@ -1,15 +1,33 @@
 module MessengerClient
   class Client
-    URL_TEMPLATE = "https://graph.facebook.com/v2.6/me/%s"
+    URL_BASE     = "https://graph.facebook.com/v2.6/%s"
+    URL_TEMPLATE = URL_BASE % "me/%s"
 
     def initialize(page_access_token)
       @page_access_token = page_access_token
       @logger            = MessengerClient::Config.logger
     end
 
-    def get_started(postback="get_started")
+    def set_get_started(postback="get_started")
       gs = GetStarted.new(postback)
       profile_post(gs.to_json)
+    end
+
+    def delete_get_started
+      payload = { fields: ["get_started"] }
+      delete(profile_url, payload)
+    end
+
+    def delete_persistent_menu
+      payload = { fields: ["persistent_menu"] }
+      delete(profile_url, payload)
+    end
+
+    def get_profile(facebook_id:, scopes:)
+      scope_list = scopes.join(",")
+      query = { fields: scope_list }
+      url = URL_BASE % facebook_id
+      get(url, query)
     end
 
     def text(recipient_id:, text:)
@@ -79,16 +97,16 @@ module MessengerClient
       payload.merge!(message: data) unless data.nil?
       payload.merge!(opts)
       res = Typhoeus.post(message_url, body: json(payload), params: { access_token: @page_access_token }, headers: headers)
-      @logger.debug(message_url)           if ENV["DEBUG"]
+      @logger.debug(message_url)   if ENV["DEBUG"]
       @logger.debug(json(payload)) if ENV["DEBUG"]
       @logger.debug(res.body)      if ENV["DEBUG"]
       @logger.debug(res.headers)   if ENV["DEBUG"]
       res
     end
 
-    def post(payload)
-      res = Typhoeus.post(message_url, body: json(payload), params: { access_token: @page_access_token }, headers: headers)
-      @logger.debug(message_url)           if ENV["DEBUG"]
+    def post(payload, url = message_url)
+      res = Typhoeus.post(url,  body: json(payload), params: { access_token: @page_access_token }, headers: headers)
+      @logger.debug(url)           if ENV["DEBUG"]
       @logger.debug(json(payload)) if ENV["DEBUG"]
       @logger.debug(res.body)      if ENV["DEBUG"]
       @logger.debug(res.headers)   if ENV["DEBUG"]
@@ -98,6 +116,25 @@ module MessengerClient
     def profile_post(payload)
       res = Typhoeus.post(profile_url, body: json(payload), params: { access_token: @page_access_token }, headers: headers)
       @logger.debug(profile_url)   if ENV["DEBUG"]
+      @logger.debug(json(payload)) if ENV["DEBUG"]
+      @logger.debug(res.body)      if ENV["DEBUG"]
+      @logger.debug(res.headers)   if ENV["DEBUG"]
+      res
+    end
+
+    def get(url, query = {})
+      res = Typhoeus.get(url, params: { access_token: @page_access_token }.merge(query), headers: headers)
+      if res.success?
+        JSON.load(res.body)
+      else
+        @logger.error("GET Request to #{url} with query #{query.inspect} Failed with #{res.code}")
+        nil
+      end
+    end
+
+    def delete(url, payload)
+      res = Typhoeus.delete(url, body: json(payload), params: { access_token: @page_access_token }, headers: headers)
+      @logger.debug(url)           if ENV["DEBUG"]
       @logger.debug(json(payload)) if ENV["DEBUG"]
       @logger.debug(res.body)      if ENV["DEBUG"]
       @logger.debug(res.headers)   if ENV["DEBUG"]

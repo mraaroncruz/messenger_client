@@ -12,6 +12,10 @@ require "messenger_client/message_parser"
 # Config
 require "messenger_client/config"
 
+# Profile
+
+require "messenger_client/profile"
+
 # Buttons
 require "messenger_client/button"
 require "messenger_client/call_button"

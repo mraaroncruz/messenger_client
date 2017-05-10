@@ -6,13 +6,9 @@ module MessengerClient
 
     def to_json
       {
-        setting_type: "call_to_actions",
-        thread_state: "new_thread",
-        call_to_actions: [
-          {
-            payload: @postback
-          }
-        ]
+        get_started: {
+          payload: @postback
+        }
       }
     end
   end
