@@ -44,8 +44,13 @@ module MessengerClient
       send(recipient_id, template.to_json)
     end
 
-    def generic_template(recipient_id:, title:, subtitle: nil, image_url: nil, default_url: nil, buttons: [])
-      template = GenericTemplate.new(title, subtitle, image_url, default_url,  buttons)
+    def list_template(recipient_id:, template_items:, buttons: [])
+      template = ListTemplate.new(template_items, buttons)
+      send(recipient_id, template.to_json)
+    end
+
+    def generic_template(recipient_id:, template_items:)
+      template = GenericTemplate.new(template_items)
       send(recipient_id, template.to_json)
     end
 

@@ -46,8 +46,11 @@ require "messenger_client/menu"
 require "messenger_client/get_started"
 
 # Templates
+require "messenger_client/template_item"
+require "messenger_client/template"
 require "messenger_client/button_template"
 require "messenger_client/generic_template"
+require "messenger_client/list_template"
 
 # Client
 require "messenger_client/client"
