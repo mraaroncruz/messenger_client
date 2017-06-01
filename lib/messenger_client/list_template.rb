@@ -1,11 +1,11 @@
 module MessengerClient
   class ListTemplate < Template
-    TEMPLATE_STYLES = %w(plain)
+    TEMPLATE_STYLES = %w(LARGE COMPACT)
 
-    def initialize(template_items, buttons = [], style = nil)
+    def initialize(template_items, buttons = [], style = "LARGE")
       @template_items = template_items
-      @buttons = buttons
-      @style = style
+      @buttons        = buttons
+      @style          = style.upcase
     end
 
     def type
@@ -18,10 +18,8 @@ module MessengerClient
         elements: @template_items.map(&:to_json),
       }
 
-      if !@style.nil?
-        raise ArgumentError, "#{@style} is not a valid template style" unless TEMPLATE_STYLES.include?(@style)
-        data.merge!(top_element_style: @style)
-      end
+      raise ArgumentError, "#{@style} is not a valid template style. Your choices are #{TEMPLATE_STYLES.join(', ')}" unless TEMPLATE_STYLES.include?(@style)
+      data.merge!(top_element_style: @style)
 
       data.merge!(buttons: @buttons.map(&:to_json)) if @buttons.any?
       data
