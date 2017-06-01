@@ -1,11 +1,11 @@
 module MessengerClient
   class ListTemplate < Template
-    TEMPLATE_STYLES = %w(LARGE COMPACT)
+    TEMPLATE_STYLES = %w(large compact)
 
-    def initialize(template_items, buttons = [], style = "LARGE")
+    def initialize(template_items, buttons = [], style = "large")
       @template_items = template_items
       @buttons        = buttons
-      @style          = style.upcase
+      @style          = style.downcase
     end
 
     def type

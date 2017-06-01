@@ -129,12 +129,10 @@ module MessengerClient
 
     def get(url, query = {})
       res = Typhoeus.get(url, params: { access_token: @page_access_token }.merge(query), headers: headers)
-      if res.success?
-        JSON.load(res.body)
-      else
+      if !res.success?
         @logger.error("GET Request to #{url} with query #{query.inspect} Failed with #{res.code}")
-        nil
       end
+      res
     end
 
     def delete(url, payload)
